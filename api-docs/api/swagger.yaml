@@ -1,0 +1,90 @@
+---
+swagger: "2.0"
+info:
+  description: "Project Service"
+  version: "1.0.0"
+  title: "项目服务"
+  termsOfService: "https://github.com/Penetration-Platform-Go"
+  contact:
+    email: "chris-ju@qq.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+- name: "project"
+  description: "Operations about Project"
+schemes:
+- "http"
+paths:
+  /api/project:
+    get:
+      tags:
+      - "project"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "Successful/Error"
+          schema:
+            $ref: "#/definitions/Project"
+    post:
+      tags:
+      - "project"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+        x-exportParamName: "Body"
+      responses:
+        "200":
+          description: "Successful/Error"
+    put:
+      tags:
+      - "project"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+        x-exportParamName: "Body"
+      responses:
+        "200":
+          description: "Successful/Error"
+    delete:
+      tags:
+      - "project"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+        x-exportParamName: "Body"
+      responses:
+        "200":
+          description: "Successful/Error"
+definitions:
+  Project:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      user:
+        type: "string"
+      value:
+        type: "object"
+        properties: {}
+    example:
+      id: "id"
+      user: "user"
+      value: "{}"

@@ -1,4 +1,4 @@
-package route
+package middleware
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func mainServiceRoute(route *gin.RouterGroup) {
-
-	route.POST("/", func(ctx *gin.Context) {
+// Auth Middleware
+func Auth() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 		client := pb.NewAuthClient(AuthGrpcClient)
 		r, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
@@ -19,9 +19,10 @@ func mainServiceRoute(route *gin.RouterGroup) {
 		})
 		if err != nil {
 			ctx.Status(403)
+			ctx.Done()
 		} else {
-			ctx.JSON(200, result)
+			ctx.Set("username", result.Username)
+			ctx.Next()
 		}
-
-	})
+	}
 }
