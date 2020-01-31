@@ -7,8 +7,17 @@ import (
 
 // CreateProject Method
 func CreateProject(ctx *gin.Context) {
-	//username, _ := ctx.Get("username")
-
+	username, _ := ctx.Get("username")
+	projectValue := ctx.PostForm("value")
+	result, _ := model.CreateProject(&model.Project{
+		User:  username.(string),
+		Value: projectValue,
+	})
+	if result {
+		ctx.Status(200)
+	} else {
+		ctx.Status(400)
+	}
 }
 
 // QueryProject Method
@@ -24,10 +33,27 @@ func QueryProject(ctx *gin.Context) {
 
 // UpdateProject Method
 func UpdateProject(ctx *gin.Context) {
-	//username, _ := ctx.Get("username")
+	username, _ := ctx.Get("username")
+	flag, result := model.UpdateProject(&model.Project{
+		ID:    ctx.PostForm("id"),
+		User:  username.(string),
+		Value: ctx.PostForm("value"),
+	})
+	if flag {
+		ctx.Status(200)
+	} else {
+		ctx.String(400, result)
+	}
 }
 
 // DeleteProject Method
+// TODO: Check Project belong user
 func DeleteProject(ctx *gin.Context) {
-	//username, _ := ctx.Get("username")
+	// username, _ := ctx.Get("username")
+	flag, result := model.DeleteProject(ctx.Query("id"))
+	if flag {
+		ctx.Status(200)
+	} else {
+		ctx.String(400, result)
+	}
 }

@@ -32,3 +32,45 @@ func QueryProject(username string) ([]Project, error) {
 	}
 	return results, nil
 }
+
+// CreateProject create project
+func CreateProject(project *Project) (bool, string) {
+	client := pb.NewMongoDBClient(MongoGrpcClient)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	result, _ := client.InsertProject(ctx, &pb.ProjectInformation{
+		Id:   project.ID,
+		User: project.User,
+		Value: &pb.ProjectValue{
+			Temp: project.Value,
+		},
+	})
+	return result.IsVaild, result.Value
+}
+
+// UpdateProject update project
+func UpdateProject(project *Project) (bool, string) {
+	client := pb.NewMongoDBClient(MongoGrpcClient)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	result, _ := client.UpdateProject(ctx, &pb.ProjectInformation{
+		Id:   project.ID,
+		User: project.User,
+		Value: &pb.ProjectValue{
+			Temp: project.Value,
+		},
+	})
+	return result.IsVaild, result.Value
+}
+
+// DeleteProject delete project
+func DeleteProject(id string) (bool, string) {
+	client := pb.NewMongoDBClient(MongoGrpcClient)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	result, _ := client.DeleteProject(ctx, &pb.ProjectId{
+		Id: id,
+	})
+	return result.IsVaild, result.Value
+}

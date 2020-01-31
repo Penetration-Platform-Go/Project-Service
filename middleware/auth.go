@@ -19,7 +19,7 @@ func Auth() gin.HandlerFunc {
 		})
 		if err != nil {
 			ctx.Status(403)
-			ctx.Done()
+			ctx.Abort()
 		} else {
 			ctx.Set("username", result.Username)
 			ctx.Next()
