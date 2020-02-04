@@ -1,10 +1,10 @@
 package model
 
 import (
+	pb "github.com/Penetration-Platform-Go/gRPC-Files/MongoDB-Service"
+	"google.golang.org/grpc"
 	"log"
 	"os"
-
-	"google.golang.org/grpc"
 )
 
 // MongoGrpcClient for connection auth grpc service
@@ -23,7 +23,8 @@ func init() {
 
 // Project define
 type Project struct {
-	ID    string `json:"id,omitempty"`
-	User  string `json:"user,omitempty"`
-	Value string `json:"value,omitempty"`
+	ID   string   `json:"id,omitempty"`
+	User string   `json:"user,omitempty"`
+	IP   []*pb.Ip `json:"ip,omitempty"`
+	Map  *pb.Map  `json:"map,omitempty"`
 }

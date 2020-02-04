@@ -24,9 +24,10 @@ func QueryProject(username string) ([]Project, error) {
 			break
 		}
 		results = append(results, Project{
-			ID:    feature.GetId(),
-			User:  feature.GetUser(),
-			Value: feature.GetValue().GetTemp(),
+			ID:   feature.Id,
+			User: feature.User,
+			IP:   feature.Ip,
+			Map:  feature.Map,
 		})
 
 	}
@@ -41,9 +42,8 @@ func CreateProject(project *Project) (bool, string) {
 	result, _ := client.InsertProject(ctx, &pb.ProjectInformation{
 		Id:   project.ID,
 		User: project.User,
-		Value: &pb.ProjectValue{
-			Temp: project.Value,
-		},
+		Ip:   project.IP,
+		Map:  project.Map,
 	})
 	return result.IsVaild, result.Value
 }
@@ -56,9 +56,8 @@ func UpdateProject(project *Project) (bool, string) {
 	result, _ := client.UpdateProject(ctx, &pb.ProjectInformation{
 		Id:   project.ID,
 		User: project.User,
-		Value: &pb.ProjectValue{
-			Temp: project.Value,
-		},
+		Ip:   project.IP,
+		Map:  project.Map,
 	})
 	return result.IsVaild, result.Value
 }

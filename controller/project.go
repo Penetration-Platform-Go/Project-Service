@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/Penetration-Platform-Go/Project-Service/model"
 	"github.com/gin-gonic/gin"
 )
@@ -8,11 +9,15 @@ import (
 // CreateProject Method
 func CreateProject(ctx *gin.Context) {
 	username, _ := ctx.Get("username")
-	projectValue := ctx.PostForm("value")
-	result, _ := model.CreateProject(&model.Project{
-		User:  username.(string),
-		Value: projectValue,
-	})
+	var project model.Project
+	project.User = username.(string)
+	err := ctx.BindJSON(&project)
+	if err != nil {
+		fmt.Println(err)
+		ctx.Status(400)
+		return
+	}
+	result, _ := model.CreateProject(&project)
 	if result {
 		ctx.Status(200)
 	} else {
@@ -33,17 +38,17 @@ func QueryProject(ctx *gin.Context) {
 
 // UpdateProject Method
 func UpdateProject(ctx *gin.Context) {
-	username, _ := ctx.Get("username")
-	flag, result := model.UpdateProject(&model.Project{
-		ID:    ctx.PostForm("id"),
-		User:  username.(string),
-		Value: ctx.PostForm("value"),
-	})
-	if flag {
-		ctx.Status(200)
-	} else {
-		ctx.String(400, result)
-	}
+	// username, _ := ctx.Get("username")
+	// flag, result := model.UpdateProject(&model.Project{
+	// 	ID:    ctx.PostForm("id"),
+	// 	User:  username.(string),
+	// 	Value: ctx.PostForm("value"),
+	// })
+	// if flag {
+	// 	ctx.Status(200)
+	// } else {
+	// 	ctx.String(400, result)
+	// }
 }
 
 // DeleteProject Method
