@@ -58,11 +58,19 @@ func UpdateProject(project *Project) (bool, string) {
 	client := pb.NewMongoDBClient(MongoGrpcClient)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	result, _ := client.UpdateProject(ctx, &pb.ProjectInformation{
-		Id:   project.ID,
-		User: project.User,
-		Ip:   project.IP,
-		Map:  project.Map,
+	result, _ := client.UpdateProject(ctx, &pb.UpdateMessage{
+		Condition: &pb.Condition{
+			Value: []*pb.Value{
+				{Key: "_id", Value: project.ID},
+			},
+		},
+		Value: &pb.ProjectInformation{
+			Ip:  project.IP,
+			Map: project.Map,
+		},
+		Key: []string{
+			"ip", "map",
+		},
 	})
 	return result.IsVaild, result.Value
 }
