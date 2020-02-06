@@ -8,12 +8,16 @@ import (
 	pb "github.com/Penetration-Platform-Go/gRPC-Files/MongoDB-Service"
 )
 
-// QueryProject Query Project By username
-func QueryProject(username string) ([]Project, error) {
+// QueryProjectsByUsername Query Project By username
+func QueryProjectsByUsername(username string) ([]Project, error) {
 	client := pb.NewMongoDBClient(MongoGrpcClient)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	stream, err := client.QueryProjectsByUsername(ctx, &pb.Username{Username: username})
+	stream, err := client.QueryProjects(ctx, &pb.Condition{
+		Value: []*pb.Value{
+			{Key: "user", Value: username},
+		},
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -24,10 +28,11 @@ func QueryProject(username string) ([]Project, error) {
 			break
 		}
 		results = append(results, Project{
-			ID:   feature.Id,
-			User: feature.User,
-			IP:   feature.Ip,
-			Map:  feature.Map,
+			ID:    feature.Id,
+			User:  feature.User,
+			Score: feature.Score,
+			IP:    feature.Ip,
+			Map:   feature.Map,
 		})
 
 	}
@@ -68,8 +73,10 @@ func DeleteProject(id string) (bool, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	result, _ := client.DeleteProject(ctx, &pb.ProjectId{
-		Id: id,
+	result, _ := client.DeleteProject(ctx, &pb.Condition{
+		Value: []*pb.Value{
+			{Key: "_id", Value: id},
+		},
 	})
 	return result.IsVaild, result.Value
 }

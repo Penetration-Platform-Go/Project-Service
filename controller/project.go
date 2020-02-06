@@ -28,7 +28,7 @@ func CreateProject(ctx *gin.Context) {
 // QueryProject Method
 func QueryProject(ctx *gin.Context) {
 	username, _ := ctx.Get("username")
-	result, err := model.QueryProject(username.(string))
+	result, err := model.QueryProjectsByUsername(username.(string))
 	if err != nil {
 		ctx.Status(400)
 	} else {
@@ -37,18 +37,23 @@ func QueryProject(ctx *gin.Context) {
 }
 
 // UpdateProject Method
+// TODO: Check Project belong user
 func UpdateProject(ctx *gin.Context) {
-	// username, _ := ctx.Get("username")
-	// flag, result := model.UpdateProject(&model.Project{
-	// 	ID:    ctx.PostForm("id"),
-	// 	User:  username.(string),
-	// 	Value: ctx.PostForm("value"),
-	// })
-	// if flag {
-	// 	ctx.Status(200)
-	// } else {
-	// 	ctx.String(400, result)
-	// }
+	username, _ := ctx.Get("username")
+	var project model.Project
+	project.User = username.(string)
+	err := ctx.BindJSON(&project)
+	if err != nil {
+		fmt.Println(err)
+		ctx.Status(400)
+		return
+	}
+	flag, result := model.UpdateProject(&project)
+	if flag {
+		ctx.Status(200)
+	} else {
+		ctx.String(400, result)
+	}
 }
 
 // DeleteProject Method
