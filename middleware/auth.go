@@ -15,7 +15,7 @@ func Auth() gin.HandlerFunc {
 		r, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		result, err := client.GetUsernameByToken(r, &pb.Token{
-			JWT: ctx.Request.Header.Get("Authenticate"),
+			JWT: ctx.Request.Header.Get("Authentication"),
 		})
 		if err != nil {
 			ctx.Status(403)

@@ -25,6 +25,7 @@ func init() {
 type Project struct {
 	ID    string   `json:"id,omitempty"`
 	User  string   `json:"user,omitempty"`
+	Title string   `json:"title,omitepty"`
 	Score int32    `json:"score,omitepty"`
 	IP    []*pb.Ip `json:"ip,omitempty"`
 	Map   *pb.Map  `json:"map,omitempty"`

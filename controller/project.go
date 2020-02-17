@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/Penetration-Platform-Go/Project-Service/model"
 	"github.com/gin-gonic/gin"
 )
@@ -13,7 +12,6 @@ func CreateProject(ctx *gin.Context) {
 	project.User = username.(string)
 	err := ctx.BindJSON(&project)
 	if err != nil {
-		fmt.Println(err)
 		ctx.Status(400)
 		return
 	}
@@ -44,7 +42,6 @@ func UpdateProject(ctx *gin.Context) {
 	project.User = username.(string)
 	err := ctx.BindJSON(&project)
 	if err != nil {
-		fmt.Println(err)
 		ctx.Status(400)
 		return
 	}
