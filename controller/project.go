@@ -12,7 +12,7 @@ func CreateProject(ctx *gin.Context) {
 	project.User = username.(string)
 	err := ctx.BindJSON(&project)
 	if err != nil {
-		ctx.Status(400)
+		ctx.Status(406)
 		return
 	}
 	result, _ := model.CreateProject(&project)

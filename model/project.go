@@ -28,12 +28,12 @@ func QueryProjectsByUsername(username string) ([]Project, error) {
 			break
 		}
 		results = append(results, Project{
-			ID:    feature.Id,
-			User:  feature.User,
-			Title: feature.Title,
-			Score: feature.Score,
-			IP:    feature.Ip,
-			Map:   feature.Map,
+			ID:        feature.Id,
+			User:      feature.User,
+			Title:     feature.Title,
+			Score:     feature.Score,
+			Equipment: feature.Equipment,
+			Map:       feature.Map,
 		})
 
 	}
@@ -46,11 +46,10 @@ func CreateProject(project *Project) (bool, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	result, _ := client.InsertProject(ctx, &pb.ProjectInformation{
-		Id:    project.ID,
-		User:  project.User,
-		Title: project.Title,
-		Ip:    project.IP,
-		Map:   project.Map,
+		User:      project.User,
+		Title:     project.Title,
+		Equipment: project.Equipment,
+		Map:       project.Map,
 	})
 	return result.IsVaild, result.Value
 }
@@ -67,12 +66,12 @@ func UpdateProject(project *Project) (bool, string) {
 			},
 		},
 		Value: &pb.ProjectInformation{
-			Ip:    project.IP,
-			Map:   project.Map,
-			Title: project.Title,
+			Equipment: project.Equipment,
+			Map:       project.Map,
+			Title:     project.Title,
 		},
 		Key: []string{
-			"ip", "map", "title",
+			"equipment", "map", "title",
 		},
 	})
 	return result.IsVaild, result.Value
